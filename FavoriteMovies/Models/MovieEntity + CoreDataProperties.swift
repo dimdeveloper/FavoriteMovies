@@ -8,7 +8,8 @@
 import Foundation
 import CoreData
 
-class MovieEntity: NSManagedObject {
+@objc(MovieEntity)
+public class MovieEntity: NSManagedObject {
     
     @nonobjc public class func fetchRequest() -> NSFetchRequest<MovieEntity>
     {
@@ -26,5 +27,16 @@ class MovieEntity: NSManagedObject {
     var voteAverage: Double {
         get { value?.doubleValue ?? 0.0 }
         set { value = NSNumber(value: newValue) }
+    }
+}
+
+@objc(MovieListEntity)
+public class MovieListEntity: NSManagedObject {
+    @NSManaged public var movies: Set<MovieEntity>?
+}
+
+extension MovieListEntity {
+    func addMovie(_ movie: MovieEntity) {
+        self.mutableSetValue(forKey: "movies").add(movie)
     }
 }
