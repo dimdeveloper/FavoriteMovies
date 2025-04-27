@@ -15,8 +15,8 @@ extension MovieEntity {
             overview: entity.overview ?? "",
             releaseDate: entity.releaseDate ?? "",
             voteAverage: entity.voteAverage,
-            posterData: entity.posterImage,
-            backdropData: entity.backdropImage
+            posterPath: entity.posterImage,
+            backdropPath: entity.backdropImage
         )
     }
 }

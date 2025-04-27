@@ -19,8 +19,8 @@ public class MovieEntity: NSManagedObject {
     @NSManaged public var id: String?
     @NSManaged public var overview: String?
     @NSManaged public var title: String?
-    @NSManaged public var posterImage: Data?
-    @NSManaged public var backdropImage: Data?
+    @NSManaged public var posterImage: String?
+    @NSManaged public var backdropImage: String?
     @NSManaged public var value: NSNumber?
     @NSManaged public var releaseDate: String?
     
