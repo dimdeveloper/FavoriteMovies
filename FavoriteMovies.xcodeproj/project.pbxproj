@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		E4DBF42C2DBD0041009CED8E /* MovieStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E4DBF42A2DBD0041009CED8E /* MovieStore.xcdatamodeld */; };
+		E4DBF46E2DBF8F06009CED8E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E4DBF46D2DBF8F06009CED8E /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E4ABBDB22DBBE7B6002AE952 /* FavoriteMovies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FavoriteMovies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4DBF42B2DBD0041009CED8E /* MovieStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MovieStore.xcdatamodel; sourceTree = "<group>"; };
+		E4DBF46D2DBF8F06009CED8E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -50,6 +52,7 @@
 		E4ABBDA92DBBE7B6002AE952 = {
 			isa = PBXGroup;
 			children = (
+				E4DBF46D2DBF8F06009CED8E /* README.md */,
 				E4DBF42A2DBD0041009CED8E /* MovieStore.xcdatamodeld */,
 				E4ABBDB42DBBE7B6002AE952 /* FavoriteMovies */,
 				E4ABBDB32DBBE7B6002AE952 /* Products */,
@@ -128,6 +131,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4DBF46E2DBF8F06009CED8E /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
