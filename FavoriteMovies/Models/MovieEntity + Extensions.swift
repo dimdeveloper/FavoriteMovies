@@ -8,15 +8,15 @@
 import Foundation
 
 extension MovieEntity {
-    static func from(entity: MovieEntity) -> Movie {
-        return Movie(
-            id: entity.id ?? "",
-            title: entity.title ?? "",
-            overview: entity.overview ?? "",
-            releaseDate: entity.releaseDate ?? "",
-            voteAverage: entity.voteAverage,
-            posterPath: entity.posterImage,
-            backdropPath: entity.backdropImage
+    static func from(entity: MovieEntity) -> MovieResponceModel {
+        return MovieResponceModel(
+            id: Int(entity.id ?? ""),
+            originalTitle: entity.title ?? "Original title is missing",
+            overview: entity.overview ?? "Description is missing",
+            posterPath: entity.releaseDate ?? "--//--//--",
+            releaseDate: entity.releaseDate,
+            backdropPath: entity.posterImage,
+            voteAverage: entity.voteAverage
         )
     }
 }

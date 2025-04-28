@@ -11,8 +11,7 @@ import CoreData
 @objc(MovieEntity)
 public class MovieEntity: NSManagedObject {
     
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<MovieEntity>
-    {
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<MovieEntity> {
         return NSFetchRequest<MovieEntity>(entityName: "MovieEntity")
     }
 
@@ -23,6 +22,7 @@ public class MovieEntity: NSManagedObject {
     @NSManaged public var backdropImage: String?
     @NSManaged public var value: NSNumber?
     @NSManaged public var releaseDate: String?
+    @NSManaged public var apiOrder: Int16
     
     var voteAverage: Double {
         get { value?.doubleValue ?? 0.0 }
