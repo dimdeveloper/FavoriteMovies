@@ -8,9 +8,13 @@
 import Foundation
 import UIKit
 
-class MovieDetailsInteractor {
+protocol MovieDetailsLogic {
+    func fetchMovieDetails(request: MovieDetails.FetchMovie.Request)
+}
+
+class MovieDetailsInteractor: MovieDetailsLogic {
     private let apiWorker = MovieAPIWorker(networkManager: NetworkManager.shared)
-    private let dbWorker = MovieDBWorker(coreDataStore: CoreDataService())
+    private let dbWorker = MovieDBWorker(coreDataStore: CoreDataService.shared)
     
     var presenter: MovieDetailsPresenterLogic?
     

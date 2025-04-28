@@ -25,7 +25,7 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
     private let descriptionLabel = UILabel()
     private let releaseDateLabel = UILabel()
 
-    var interactor: MovieDetailsInteractor?
+    var interactor: MovieDetailsLogic?
     
     private var router: MovieDetailsRouter?
     private var movieID: String
@@ -79,9 +79,8 @@ private extension MovieDetailsViewController {
         let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
         containerView.addSubview(titleLabel)
         titleLabel.frame = containerView.bounds
-        
         navigationItem.titleView = containerView
-        
+
         movieImageView.image = UIImage(systemName: "photo")
         movieImageView.contentMode = .scaleAspectFill
         movieImageView.layer.cornerRadius = 12
@@ -98,30 +97,12 @@ private extension MovieDetailsViewController {
         scoreView.addArrangedSubview(scoreLabel)
         scoreView.translatesAutoresizingMaskIntoConstraints = false
 
-        titleLabel.text = movie.title
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 22)
-        titleLabel.textColor = .white
-
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        scoreView.translatesAutoresizingMaskIntoConstraints = false
-        movieImageView.addSubview(titleLabel)
-        movieImageView.addSubview(scoreView)
-
-        NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: movieImageView.leadingAnchor, constant: 16),
-            titleLabel.bottomAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: -16),
-            
-            scoreView.trailingAnchor.constraint(equalTo: movieImageView.trailingAnchor, constant: -16),
-            scoreView.bottomAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: -16)
-        ])
-
-
         descriptionTitleLabel.text = "Description:"
         descriptionTitleLabel.font = UIFont.boldSystemFont(ofSize: 18)
-        
+
         descriptionLabel.text = movie.overview
         descriptionLabel.numberOfLines = 0
-        
+
         releaseDateLabel.text = "Release Date: \(movie.releaseDate)"
         releaseDateLabel.font = UIFont.systemFont(ofSize: 16)
 
@@ -131,14 +112,28 @@ private extension MovieDetailsViewController {
         descriptionStack.addArrangedSubview(descriptionLabel)
         descriptionStack.addArrangedSubview(releaseDateLabel)
         descriptionStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        setupUIlayout()
+    }
+    
+    func setupUIlayout() {
+        view.subviews.forEach { $0.removeFromSuperview() }
 
+        let isPortrait = traitCollection.verticalSizeClass != .compact
+
+        if isPortrait {
+            setupPortraitLayout()
+        } else {
+            setupLandscapeLayout()
+        }
+    }
+
+    func setupPortraitLayout() {
         view.addSubview(movieImageView)
         view.addSubview(descriptionStack)
 
-        descriptionStack.translatesAutoresizingMaskIntoConstraints = false
-
         NSLayoutConstraint.activate([
-            movieImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            movieImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             movieImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             movieImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             movieImageView.heightAnchor.constraint(equalToConstant: 250),
@@ -147,5 +142,31 @@ private extension MovieDetailsViewController {
             descriptionStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             descriptionStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
+    }
+
+    func setupLandscapeLayout() {
+        let mainStack = UIStackView(arrangedSubviews: [movieImageView, descriptionStack])
+        mainStack.axis = .horizontal
+        mainStack.spacing = 16
+        mainStack.alignment = .top
+        mainStack.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(mainStack)
+
+        NSLayoutConstraint.activate([
+            movieImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.25),
+
+            mainStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            mainStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            mainStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            mainStack.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+        ])
+    }
+}
+
+extension MovieDetailsViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setupUIlayout()
     }
 }
