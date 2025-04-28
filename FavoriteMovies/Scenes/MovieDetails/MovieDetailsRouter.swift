@@ -2,7 +2,7 @@
 //  MovieDetailsRouter.swift
 //  FavoriteMovies
 //
-//  Created by MyMacbook on 27.04.2025.
+//  Created by Dmytro Melnyk on 27.04.2025.
 //
 
 import Foundation

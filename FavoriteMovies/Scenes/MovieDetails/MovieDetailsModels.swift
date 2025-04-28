@@ -2,10 +2,21 @@
 //  MovieDetailsModels.swift
 //  FavoriteMovies
 //
-//  Created by MyMacbook on 27.04.2025.
+//  Created by Dmytro Melnyk on 27.04.2025.
 //
 
 import Foundation
+
+struct MovieViewModel {
+    let id: String
+    let title: String
+    let overview: String
+    let releaseDate: String
+    let voteAverage: String
+    
+    var posterPath: String?
+    var backdropPath: String?
+}
 
 enum MovieDetails {
     enum FetchMovie {
@@ -19,17 +30,8 @@ enum MovieDetails {
         struct ErrorModel {
             var error: RequestError
         }
+        
         struct ViewModel {
-            struct MovieViewModel {
-                let id: String
-                let title: String
-                let overview: String
-                let releaseDate: String
-                let voteAverage: String
-                
-                var posterPath: String?
-                var backdropPath: String?
-            }
             var presentedMovie: MovieViewModel
         }
     }

@@ -2,16 +2,17 @@
 //  MovieDetailsIterator.swift
 //  FavoriteMovies
 //
-//  Created by MyMacbook on 27.04.2025.
+//  Created by Dmytro Melnyk on 27.04.2025.
 //
 
 import Foundation
+import UIKit
 
 class MovieDetailsInteractor {
     private let apiWorker = MovieAPIWorker(networkManager: NetworkManager.shared)
     private let dbWorker = MovieDBWorker(coreDataStore: CoreDataService())
     
-    var presenter: MovieDetailsPresenter?
+    var presenter: MovieDetailsPresenterLogic?
     
     func fetchMovieDetails(request: MovieDetails.FetchMovie.Request) {
         apiWorker.fetchMovie(id: request.movieID) { responce in
@@ -19,37 +20,49 @@ class MovieDetailsInteractor {
             case .success(let movie):
                 let responce = MovieDetails.FetchMovie.Response(movie: movie)
                 
-                if let path = movie.backdropPath {
-                    self.fetchMovieImage(from: path)
-                }
+                self.fetchMovieImage(from: movie.backdropPath)
                 
                 self.presenter?.presentMovie(response: responce)
-                self.dbWorker.saveMovies([movie])
-            case .failure(let error):
-                print("Network failed! Fetching from Core Data...")
+                self.dbWorker.updateMovie(movie: movie)
+            case .failure(_):
                 self.fetchMovieFromLocalDatabase(movieID: request.movieID)
             }
         }
     }
+}
+
+// MARK: Private extensions
+private extension MovieDetailsInteractor {
     
-    func fetchMovieImage(from imagePath: String) {
-        apiWorker.loadImage(pathURL: imagePath) { result in
-            if let result {
-                self.presenter?.presentMovieImage(imageData: result)
-            } else {
-                //self.presenter?.presentError(error)
-            }
+    func fetchDBImage(imagePath: String?) {
+        guard let imagePath else { return }
+        self.dbWorker.fetchImage(imageURL: imagePath) { data in
+            self.presenter?.presentMovieImage(imageData: data)
         }
     }
     
     func fetchMovieFromLocalDatabase(movieID: String) {
-        apiWorker.fetchMovie(id: movieID) { result in
+        dbWorker.fetchMovie(movieID: movieID) { result in
             switch result {
             case .success(let movie):
-                self.presenter?.presentMovieDetails(movie)
-            case .failure(let error):
-                self.presenter?.presentError(error.localizedDescription)
+                let responce = MovieDetails.FetchMovie.Response(movie: movie)
+                DispatchQueue.main.async {
+                    self.presenter?.presentMovie(response: responce)
+                }
+                fetchDBImage(imagePath: movie.backdropPath)
+            case .failure(_):
+                break
             }
         }
     }
+    
+    func fetchMovieImage(from imagePath: String?) {
+        guard let imagePath else { return }
+        apiWorker.loadImage(pathURL: imagePath) { result in
+            guard let result else { return }
+            self.presenter?.presentMovieImage(imageData: result)
+            self.dbWorker.updateImage(image: ImageData(url: imagePath, imagedata: result))
+        }
+    }
 }
+

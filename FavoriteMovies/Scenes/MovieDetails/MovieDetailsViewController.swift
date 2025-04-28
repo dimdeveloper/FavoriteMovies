@@ -2,20 +2,19 @@
 //  MovieDetailsViewController.swift
 //  FavoriteMovies
 //
-//  Created by MyMacbook on 27.04.2025.
+//  Created by Dmytro Melnyk on 27.04.2025.
 //
 
 import Foundation
 import UIKit
 
 protocol MovieDetailsDisplayLogic: AnyObject {
-    func displayMovieDetails(viewModel: MovieDetails.FetchMovie.ViewModel.MovieViewModel)
+    func displayMovieDetails(viewModel: MovieViewModel)
     func updateImage(with: UIImage)
 }
 
 class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
-
-    private var movie: MovieDetails.FetchMovie.ViewModel.MovieViewModel?
+    private var movie: MovieViewModel?
     private let movieImageView = UIImageView()
     private let titleLabel = UILabel()
     private let scoreView = UIStackView()
@@ -27,8 +26,9 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
     private let releaseDateLabel = UILabel()
 
     var interactor: MovieDetailsInteractor?
-    var router: MovieDetailsRouter?
-    var movieID: String
+    
+    private var router: MovieDetailsRouter?
+    private var movieID: String
     
     init(movieId: String) {
         self.movieID = movieId
@@ -41,7 +41,7 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func displayMovieDetails(viewModel: MovieDetails.FetchMovie.ViewModel.MovieViewModel) {
+    func displayMovieDetails(viewModel: MovieViewModel) {
         setupUI(movie: viewModel)
     }
     
@@ -50,7 +50,14 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
         navigationController?.navigationBar.prefersLargeTitles = false
     }
 
-    private func setup() {
+    func updateImage(with image: UIImage) {
+        movieImageView.image = image
+    }
+}
+
+// MARK: Private etensions
+private extension MovieDetailsViewController {
+    func setup() {
         let viewController = self
         let interactor = MovieDetailsInteractor()
         let presenter = MovieDetailsPresenter()
@@ -63,11 +70,7 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
         interactor.fetchMovieDetails(request: request)
     }
     
-    func updateImage(with image: UIImage) {
-        movieImageView.image = image
-    }
-    
-    private func setupUI(movie: MovieDetails.FetchMovie.ViewModel.MovieViewModel) {
+    func setupUI(movie: MovieViewModel) {
         let titleLabel = UILabel()
         titleLabel.text = movie.title
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
@@ -87,7 +90,7 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
 
         scoreLabel.text = "\(movie.voteAverage)"
         scoreLabel.font = UIFont.boldSystemFont(ofSize: 18)
-        scoreImageView.image = UIImage(named: "score_icon")
+        scoreImageView.image = UIImage(named: "Star")
 
         scoreView.axis = .horizontal
         scoreView.spacing = 8
@@ -129,19 +132,12 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
         descriptionStack.addArrangedSubview(releaseDateLabel)
         descriptionStack.translatesAutoresizingMaskIntoConstraints = false
 
-        //view.addSubview(navTitleView)
         view.addSubview(movieImageView)
         view.addSubview(descriptionStack)
 
-        //navTitleView.translatesAutoresizingMaskIntoConstraints = false
         descriptionStack.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-//            navTitleView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-//            navTitleView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            navTitleView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-//            navTitleView.heightAnchor.constraint(equalToConstant: 40),
-
             movieImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             movieImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             movieImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
