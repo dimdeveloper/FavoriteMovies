@@ -8,8 +8,9 @@
 import Foundation
 
 protocol MovieAPIWorkerProtocol {
-    func loadData(queryItem: URLQueryItem, completion: @escaping CompletionHandler)
+    func loadMoviesData(queryItem: URLQueryItem, completion: @escaping CompletionHandler)
     func loadImageData(imagePath: String, completion: @escaping (Data?) -> Void)
+    func loadSingleMovieData(movieID: String, completion: @escaping SingleMovieCompletionHandler)
 }
 
 class MovieAPIWorker {
@@ -19,9 +20,15 @@ class MovieAPIWorker {
       self.networkManager = networkManager
     }
     
-    func fetchMovies(currentPage: Int, completion: @escaping CompletionHandler) {
-        let pageQuery = URLQueryItem(name: "page", value: String(currentPage))
-        networkManager.loadData(queryItem: pageQuery) { responce in
+    func fetchMovies(request: MovieList.FetchMovies.Request, completion: @escaping CompletionHandler) {
+        let pageQuery = URLQueryItem(name: "page", value: String(request.page))
+        networkManager.loadMoviesData(queryItem: pageQuery) { responce in
+            completion(responce)
+        }
+    }
+    
+    func fetchMovie(id: String, completion: @escaping SingleMovieCompletionHandler) {
+        networkManager.loadSingleMovieData(movieID: id) { responce in
             completion(responce)
         }
     }
