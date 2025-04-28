@@ -2,7 +2,7 @@
 //  MovieTableViewCell.swift
 //  FavoriteMovies
 //
-//  Created by MyMacbook on 26.04.2025.
+//  Created by Dmytro Melnyk on 26.04.2025.
 //
 
 import Foundation
@@ -99,7 +99,7 @@ class MovieTableViewCell: UITableViewCell {
         ])
     }
 
-    func configure(with movie: MovieList.FetchMovies.ViewModel.MovieViewModel) {
+    func configure(with movie: MovieListViewModel) {
         titleLabel.text = movie.title
         descriptionLabel.text = movie.overview
         releaseDateLabel.text = "Release: \(movie.releaseDate)"

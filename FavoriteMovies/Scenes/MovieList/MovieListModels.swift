@@ -8,6 +8,17 @@
 import Foundation
 import UIKit
 
+struct MovieListViewModel {
+    let id: String
+    let title: String
+    let overview: String
+    let releaseDate: String
+    let voteAverage: String
+    
+    var posterPath: String?
+    var backdropPath: String?
+}
+
 enum MovieList {
     enum FetchMovies {
         struct Request {
@@ -16,22 +27,20 @@ enum MovieList {
         struct Response {
             var movies: [MovieResponceModel]
         }
-        
         struct ErrorModel {
             var error: RequestError
         }
         struct ViewModel {
-            struct MovieViewModel {
-                let id: String
-                let title: String
-                let overview: String
-                let releaseDate: String
-                let voteAverage: String
-                
-                var posterPath: String?
-                var backdropPath: String?
-            }
-            var presentedMovies: [MovieViewModel]
+            var presentedMovies: [MovieListViewModel]
+        }
+    }
+    
+    enum FetchImages {
+        struct ImageRequest {
+            var path: String
+        }
+        struct ImageResponce {
+            var data: Data
         }
     }
 }

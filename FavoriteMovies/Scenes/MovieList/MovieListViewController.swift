@@ -9,14 +9,14 @@ import Foundation
 import UIKit
 
 protocol MovieListDisplayLogic: AnyObject {
-    func displayMovies(_ viewModels: [MovieList.FetchMovies.ViewModel.MovieViewModel])
+    func displayMovies(_ viewModels: [MovieListViewModel])
     func updateMovieImage(posterPath: String, image: UIImage)
 }
 
 class MovieListViewController: UITableViewController, MovieListDisplayLogic {
-    var interactor: MovieListInteractor?
-    var router: MovieListRouter?
-    var movies: [MovieList.FetchMovies.ViewModel.MovieViewModel] = []
+    var interactor: MovieListLogic?
+    var router: ListRouter?
+    var movies: [MovieListViewModel] = []
     var indexPathsForVisibleRows: [IndexPath] = []
     
     override func viewDidLoad() {
@@ -24,16 +24,12 @@ class MovieListViewController: UITableViewController, MovieListDisplayLogic {
         setupTableView()
         setup()
         fetchMovies()
-        
-        print("View loaded")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        tableView.dataSource = self
-//        tableView.delegate = self
-//
-//        fetchOrders()
+        title = "MovieToGo"
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     private func setupTableView() {
@@ -50,45 +46,32 @@ class MovieListViewController: UITableViewController, MovieListDisplayLogic {
         let viewController = self
         let interactor = MovieListInteractor()
         let presenter = MovieListPresenter()
-        let router = MovieListRouter()
+        let router = MovieListRouter(viewController: self)
         viewController.interactor = interactor
         viewController.router = router
         interactor.presenter = presenter
         presenter.viewController = viewController
-        router.viewController = viewController
-        router.dataStore = interactor
     }
     
     func fetchMovies() {
         interactor?.fetchMovies()
     }
     
-    func displayMovies(_ viewModels: [MovieList.FetchMovies.ViewModel.MovieViewModel]) {
+    func displayMovies(_ viewModels: [MovieListViewModel]) {
         let previousCount = movies.count
             movies.append(contentsOf: viewModels)
-//            let indexPaths = (previousCount..<movies.count).map { IndexPath(row: $0, section: 0) }
-//            tableView.insertRows(at: indexPaths, with: .fade)
-//        if self.movies.isEmpty {
-//            self.movies = viewModels
-//        } else {
-//            viewModels.forEach { newMovie in
-//                if !self.movies.contains(where: {$0.id == newMovie.id} ) {
-//                    self.movies.append(newMovie)
-//                }
-//            }
-//        }
+
         tableView.reloadData()
     }
     
     func updateMovieImage(posterPath: String, image: UIImage) {
         if let index = movies.firstIndex(where: { $0.posterPath == posterPath }) {
-                let indexPath = IndexPath(row: index, section: 0)
-                if let cell = tableView.cellForRow(at: indexPath) as? MovieTableViewCell {
-                    cell.updateImage(with: image)
-                }
+            let indexPath = IndexPath(row: index, section: 0)
+            if let cell = tableView.cellForRow(at: indexPath) as? MovieTableViewCell {
+                cell.updateImage(with: image)
             }
         }
-    
+    }
 }
 
 extension MovieListViewController {
@@ -100,14 +83,7 @@ extension MovieListViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as? MovieTableViewCell else {
             return UITableViewCell()
         }
-//        if let visibleIndexPaths = tableView.indexPathsForVisibleRows {
-//            let newVisibleIndexPath = visibleIndexPaths.filter { !indexPathsForVisibleRows.contains($0) }
-//            let visibleMovies = newVisibleIndexPath.map { movies[$0.row] }
-//            interactor?.fetchImage(for: visibleMovies)
-//            indexPathsForVisibleRows = visibleIndexPaths
-//            // TODO: Delete print
-//            print("New movies: \(visibleMovies.map {$0.title})")
-//        }
+
         let movie = movies[indexPath.row]
         interactor?.fetchImage(for: movie)
         cell.configure(with: movie)
@@ -117,7 +93,12 @@ extension MovieListViewController {
 }
 
 extension MovieListViewController {
-
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let movieID = movies[indexPath.row].id
+        let request = MovieDetails.FetchMovie.Request(movieID: movieID)
+        router?.routeToDetailsView(with: request)
+    }
+    // create pagination behavior
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
