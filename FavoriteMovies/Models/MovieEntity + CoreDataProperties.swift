@@ -9,20 +9,20 @@ import Foundation
 import CoreData
 
 @objc(MovieEntity)
-public class MovieEntity: NSManagedObject {
+class MovieEntity: NSManagedObject {
     
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<MovieEntity> {
+    @nonobjc class func fetchRequest() -> NSFetchRequest<MovieEntity> {
         return NSFetchRequest<MovieEntity>(entityName: "MovieEntity")
     }
 
-    @NSManaged public var id: String?
-    @NSManaged public var overview: String?
-    @NSManaged public var title: String?
-    @NSManaged public var posterImage: String?
-    @NSManaged public var backdropImage: String?
-    @NSManaged public var value: NSNumber?
-    @NSManaged public var releaseDate: String?
-    @NSManaged public var apiOrder: Int16
+    @NSManaged var id: String?
+    @NSManaged var overview: String?
+    @NSManaged var title: String?
+    @NSManaged var posterImage: String?
+    @NSManaged var backdropImage: String?
+    @NSManaged var value: NSNumber?
+    @NSManaged var releaseDate: String?
+    @NSManaged var apiOrder: Int16
     
     var voteAverage: Double {
         get { value?.doubleValue ?? 0.0 }
@@ -31,7 +31,7 @@ public class MovieEntity: NSManagedObject {
 }
 
 @objc(MovieListEntity)
-public class MovieListEntity: NSManagedObject {
+class MovieListEntity: NSManagedObject {
     @NSManaged public var movies: Set<MovieEntity>?
 }
 

@@ -1,5 +1,5 @@
 //
-//  Movie.swift
+//  .swift
 //  FavoriteMovies
 //
 //  Created by Dmytro Melnyk on 25.04.2025.
@@ -18,7 +18,6 @@ struct MoviesResponce: Decodable {
         case results
     }
 }
-
 
 struct MovieResponceModel: Decodable {
     let id: Int?
