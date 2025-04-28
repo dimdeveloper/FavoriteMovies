@@ -105,6 +105,7 @@ private extension MovieDetailsViewController {
 
         releaseDateLabel.text = "Release Date: \(movie.releaseDate)"
         releaseDateLabel.font = UIFont.systemFont(ofSize: 16)
+        releaseDateLabel.textColor = .accentOrange
 
         descriptionStack.axis = .vertical
         descriptionStack.spacing = 8

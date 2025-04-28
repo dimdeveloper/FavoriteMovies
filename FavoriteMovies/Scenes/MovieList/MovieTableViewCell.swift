@@ -40,7 +40,7 @@ class MovieTableViewCell: UITableViewCell {
     private let releaseDateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = .gray
+        label.textColor = .accentOrange
         return label
     }()
 
