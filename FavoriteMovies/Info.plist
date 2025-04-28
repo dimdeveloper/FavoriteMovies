@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>movieDetails</key>
+	<string>https://api.themoviedb.org/3/movie/</string>
+	<key>popularMoviesURL</key>
+	<string>https://api.themoviedb.org/3/movie/popular</string>
+	<key>imageURL</key>
+	<string>https://image.tmdb.org/t/p/w500/</string>
+	<key>apiKey</key>
+	<string>ed0957c3c3f2acb89d27b394e9612d5e</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

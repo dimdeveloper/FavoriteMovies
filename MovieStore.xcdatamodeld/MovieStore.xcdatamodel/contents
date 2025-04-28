@@ -8,6 +8,7 @@
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageCacheEntity"/>
     </entity>
     <entity name="MovieEntity" representedClassName="MovieEntity" syncable="YES">
+        <attribute name="apiOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="backdropImage" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="overview" optional="YES" attributeType="String"/>

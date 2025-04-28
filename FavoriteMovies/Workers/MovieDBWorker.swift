@@ -37,7 +37,7 @@ class MovieDBWorker {
         if let result = coreDataStore.fetchMovie(movieID: movieID) {
             completion(.success(result))
         } else {
-            completion(.failure(.generalError))
+            completion(.failure(.fetchFailed))
         }
     }
     
