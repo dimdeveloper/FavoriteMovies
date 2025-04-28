@@ -58,8 +58,7 @@ class MovieListViewController: UITableViewController, MovieListDisplayLogic {
     }
     
     func displayMovies(_ viewModels: [MovieListViewModel]) {
-        let previousCount = movies.count
-            movies.append(contentsOf: viewModels)
+        movies.append(contentsOf: viewModels)
 
         tableView.reloadData()
     }

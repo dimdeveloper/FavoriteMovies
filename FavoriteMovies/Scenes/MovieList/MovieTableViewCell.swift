@@ -17,6 +17,7 @@ class MovieTableViewCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.widthAnchor.constraint(equalToConstant: 128).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 188).isActive = true
+        imageView.layer.cornerRadius = 10
         return imageView
     }()
     

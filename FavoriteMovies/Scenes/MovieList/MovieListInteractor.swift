@@ -20,7 +20,7 @@ protocol MovieListLogic {
 
 class MovieListInteractor: MovieListLogic {
     private let apiWorker = MovieAPIWorker(networkManager: NetworkManager.shared)
-    private let dbWorker = MovieDBWorker(coreDataStore: CoreDataService())
+    private let dbWorker = MovieDBWorker(coreDataStore: CoreDataService.shared)
     
     private var currentPage: Int = 1
     private var pagesCount: Int = 1

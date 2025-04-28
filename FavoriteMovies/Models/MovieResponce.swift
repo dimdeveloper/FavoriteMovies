@@ -1,5 +1,5 @@
 //
-//  .swift
+//  MoviesResponce.swift
 //  FavoriteMovies
 //
 //  Created by Dmytro Melnyk on 25.04.2025.
